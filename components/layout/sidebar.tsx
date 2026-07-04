@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { mainNavigation } from "@/constants/navigation";
+import {
+  isCountryNavigationItem,
+  isNavigationItemActive,
+  mainNavigation
+} from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 
 export function Sidebar() {
@@ -12,8 +16,7 @@ export function Sidebar() {
     <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 border-r border-white/10 px-3 py-6 lg:block">
       <nav className="space-y-1">
         {mainNavigation.map((item) => {
-          const active =
-            item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          const active = isNavigationItemActive(item, pathname);
           const Icon = item.icon;
           return (
             <Link
@@ -25,6 +28,7 @@ export function Sidebar() {
               key={item.href}
             >
               <Icon className="h-5 w-5" />
+              {isCountryNavigationItem(item) && <span>{item.flag}</span>}
               {item.label}
             </Link>
           );
